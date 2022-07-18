@@ -61,11 +61,13 @@ def analyz(url):
         print(f"The minimum value is {arr.min()}")
 
     if arr.min() > 17:
-        print("Video is moved to Done")
+
         try:
             os.rename(video_file, video_file.replace("data", "done"))
         except Exception:
             print("File was added earlier")
+        else:
+            print("Video is moved to Done")
     else:
         os.remove(video_file)
         print("Video is deleted")
