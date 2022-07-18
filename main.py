@@ -19,6 +19,8 @@ from vid_to_frames import VidToFrames
 DWNLD: Downloader
 VTF: VidToFrames
 
+FACE_PERCENT = 17
+
 
 def face_percent(fc_img):
     # возвращает процент площади, которую занимает лицо на заданном изображении
@@ -33,6 +35,7 @@ def face_percent(fc_img):
 
 
 def analyz(url):
+    global FACE_PERCENT
     global DWNLD
     global VTF
     # анализирует видео по заданной ссылке и решает, удалить его или оставить
@@ -60,7 +63,7 @@ def analyz(url):
         print(f"The mean value is {arr.mean()}")
         print(f"The minimum value is {arr.min()}")
 
-    if arr.min() > 17:
+    if arr.min() > FACE_PERCENT:
 
         try:
             os.rename(video_file, video_file.replace("data", "done"))
