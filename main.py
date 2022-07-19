@@ -21,13 +21,15 @@ from downloader import Downloader
 from TTLogger import TTLogger
 from vid_to_frames import VidToFrames
 
-CHANNELS_DB ={}
+CHANNELS_DB = {}
 DWNLD: Downloader
 VTF: VidToFrames
 
-CONSOLE : Console
+CONSOLE: Console
 FACE_PERCENT = 17
 DELAY = 10
+VIDEO_PER_CHANNEL = 3
+
 
 def db_init():
     global CHANNELS_DB
@@ -60,6 +62,11 @@ def face_percent(fc_img):
 
 def analyz(url):
     global CONSOLE
+    global VIDEO_PER_CHANNEL
+    global FACE_PERCENT
+    global DWNLD
+    global VTF
+    global CHANNELS_DB
     console = CONSOLE
     status = 0
     start = url.find("@") + 1
@@ -73,17 +80,14 @@ def analyz(url):
     table.add_row("URL", url)
     table.add_row("Channel", channel)
 
-    global FACE_PERCENT
-    global DWNLD
-    global VTF
-    global CHANNELS_DB
+
     # анализирует видео по заданной ссылке и решает, удалить его или оставить
     # (если минимальный процент площади лица на протяжении всего видео больше FACE_PERCENT
     # то его видео сохраняется в папке done, а если меньше, то удаляется)
     video_file = DWNLD.dwnld(url)
     if video_file == "":
         console.print("File cannot be loaded")
-        return -1 , status
+        return -1, status
     video_file = VTF.from_video_to_frames(video_file)
 
     path = video_file[:-4] + "\\"
@@ -104,7 +108,7 @@ def analyz(url):
         table.add_row("Min value:", str(m) + " %", style="green")
         num = None
         if channel in CHANNELS_DB:
-            if CHANNELS_DB[channel] < 3:
+            if CHANNELS_DB[channel] < VIDEO_PER_CHANNEL:
                 CHANNELS_DB[channel] += 1
                 num = CHANNELS_DB[channel]
         else:
@@ -192,10 +196,6 @@ def feed():
             time.sleep(0.5)
             print("MEAN ARR: ", str(mean(arr)))
             live.update(update_table(str(mean(arr)), str(success), str(fails)), refresh=True)
-
-
-
-
 
 
 def file():
