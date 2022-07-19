@@ -22,7 +22,6 @@ class TTLogger:
             try:
                 WebDriverWait(self.DRIVER, self.DELAY).until(
                     EC.presence_of_element_located((By.CLASS_NAME, "e13wiwn62")))
-                print("Page is ready!")
                 loaded = True
             except Exception:
                 self.DRIVER.execute_script("window.scrollBy(0,100)", "")
@@ -31,7 +30,6 @@ class TTLogger:
         try:
             WebDriverWait(self.DRIVER, self.DELAY).until(
                 EC.presence_of_element_located((By.XPATH, "//div[text()='Продолжить в Google']")))
-            print("Page is ready!")
         except Exception:
             raise Exception("Registration wasnt loaded")
         button = self.DRIVER.find_element(By.XPATH, "//div[text()='Продолжить в Google']")
@@ -50,7 +48,6 @@ class TTLogger:
         try:
             WebDriverWait(self.DRIVER, self.DELAY).until(
                 EC.presence_of_element_located((By.ID, "identifierId")))
-            print("Page is ready!")
         except Exception:
             raise Exception("Registration wasnt loaded")
         in_box = self.DRIVER.find_element(By.ID, "identifierId")
@@ -60,7 +57,6 @@ class TTLogger:
         try:
             WebDriverWait(self.DRIVER, self.DELAY).until(
                 EC.presence_of_element_located((By.NAME, "password")))
-            print("Page is ready!")
         except Exception:
             raise Exception("Registration wasnt loaded")
         in_box = self.DRIVER.find_element(By.NAME, "password")
@@ -71,7 +67,6 @@ class TTLogger:
         try:
             WebDriverWait(self.DRIVER, self.DELAY*2).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "etvrc4k0")))
-            print("Page is ready!")
         except TimeoutException:
             raise Exception("NOT LOADED!")
 

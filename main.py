@@ -9,17 +9,41 @@ import os
 import face_recognition as fc
 from PIL import Image
 import time
-import numpy as np
 from selenium.webdriver.common.action_chains import ActionChains
+from rich.prompt import Prompt
+from rich.live import Live
+from rich.console import Console
+from rich.table import Table
+from rich import box
+from statistics import mean
 
 from downloader import Downloader
 from TTLogger import TTLogger
 from vid_to_frames import VidToFrames
 
+CHANNELS_DB ={}
 DWNLD: Downloader
 VTF: VidToFrames
 
+CONSOLE : Console
 FACE_PERCENT = 17
+DELAY = 10
+
+def db_init():
+    global CHANNELS_DB
+    dict = os.path.dirname(__file__) + "\\done\\"
+    for file in os.listdir(dict):
+        file = file[:-4]
+        separator = file.rfind("_")
+        if separator != -1:
+            id = int(file[separator + 1:])
+            channel = file[:separator]
+            if channel in CHANNELS_DB:
+                if CHANNELS_DB[channel] < id:
+                    CHANNELS_DB[channel] = id
+            else:
+                CHANNELS_DB[channel] = id
+    print(CHANNELS_DB)
 
 
 def face_percent(fc_img):
@@ -35,132 +59,196 @@ def face_percent(fc_img):
 
 
 def analyz(url):
+    global CONSOLE
+    console = CONSOLE
+    status = 0
+    start = url.find("@") + 1
+    if start != 0:
+        channel = url[start:url.find("/", start)]
+    else:
+        channel = "undefined"
+    table = Table(show_header=True, header_style="bold magenta", show_lines=False, box=box.HEAVY_EDGE)
+    table.add_column("Key", style="dim")
+    table.add_column("Value")
+    table.add_row("URL", url)
+    table.add_row("Channel", channel)
+
     global FACE_PERCENT
     global DWNLD
     global VTF
+    global CHANNELS_DB
     # анализирует видео по заданной ссылке и решает, удалить его или оставить
-    # (если минимальный процент площади лица на протяжении всего видео больше 30
+    # (если минимальный процент площади лица на протяжении всего видео больше FACE_PERCENT
     # то его видео сохраняется в папке done, а если меньше, то удаляется)
     video_file = DWNLD.dwnld(url)
     if video_file == "":
-        print("File cannot be loaded")
-        return 1
+        console.print("File cannot be loaded")
+        return -1 , status
     video_file = VTF.from_video_to_frames(video_file)
 
     path = video_file[:-4] + "\\"
-    print(path)
-    stat = []
+    arr = []
     for frame_path in VTF.FRAMES_PATH:
         image = fc.load_image_file(frame_path)
         face_per = face_percent(image)
-        stat.append(face_per)
+        arr.append(face_per)
         if face_per == 0:
             break
-
-    arr = np.array(stat)
-    argmin = arr.min()
-    if arr.size != 0:
-        print(f"The mean value is {arr.mean()}")
-        print(f"The minimum value is {arr.min()}")
-
-    if arr.min() > FACE_PERCENT:
-
-        try:
-            os.rename(video_file, video_file.replace("data", "done"))
-        except Exception:
-            print("File was added earlier")
+    m = mean(arr)
+    if m > FACE_PERCENT:
+        table.add_row("Mean value:", str(m) + " %", style="green")
+    else:
+        table.add_row("Mean value:", str(m) + " %", style="red")
+    m = min(arr)
+    if m > FACE_PERCENT:
+        table.add_row("Min value:", str(m) + " %", style="green")
+        num = None
+        if channel in CHANNELS_DB:
+            if CHANNELS_DB[channel] < 3:
+                CHANNELS_DB[channel] += 1
+                num = CHANNELS_DB[channel]
         else:
-            print("Video is moved to Done")
+            CHANNELS_DB[channel] = 1
+            num = 1
+        if num is None:
+            table.add_row("Result:", "The limit of videos from this channel has been exceeded", style="yellow")
+        else:
+            done_path = video_file[:video_file.find("data")] + "done\\" + channel + "_" + str(num) + ".mp4"
+            try:
+                os.rename(video_file, done_path)
+            except Exception:
+                table.add_row("Result:", "File was added earlier", style="yellow")
+            else:
+                table.add_row("Result:", "Video is moved to Done", style="green")
+                status = 1
     else:
+        table.add_row("Min value:", str(m) + " %", style="red")
         os.remove(video_file)
-        print("Video is deleted")
+        table.add_row("Result:", "Video is deleted", style="red")
     shutil.rmtree(path)
+    console.print(table)
+    return m, status
 
-    return argmin
+
+def update_table(perc, s, f) -> Table:
+    table = Table(show_header=False, show_lines=False, box=box.HEAVY_EDGE)
+    table.add_column("Data", style="dim")
+    table.add_column("Title")
+    table.add_row("Average min %", perc)
+    table.add_row("FAILS", f, style="red")
+    table.add_row("SUCCESS", s, style="green")
+    return table
 
 
-def main():
-    global VTF
+def feed():
+    arr = []
+    global DELAY
     global DWNLD
-    mas = []
-    delay = 10
+    global CONSOLE
+    console = CONSOLE
     driver = webdriver.Chrome()
-    driver.minimize_window()
+    DWNLD = Downloader(driver, DELAY)
+    driver.maximize_window()
+    driver.get("https://www.tiktok.com/")
+    try:
+        WebDriverWait(driver, DELAY).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "ev30f212")))
+    except TimeoutException:
+        raise Exception("NOT LOADED!")
+    LogIn = TTLogger(driver, DELAY)
+    LogIn.login()
+    time.sleep(5)
 
-    VTF = VidToFrames(1)
-    DWNLD = Downloader(driver, delay)
-    LogIn = TTLogger(driver, delay)
-
-    t1 = time.time()
-    is_file = input("From file or feed?\n")
-    if is_file == "file":
-        is_file = True
-    else:
-        is_file = False
-    if is_file:
-        file = input("URL file:")
-        if file != "":
-            start = int(input("Start from:"))
-            f = open(file, "r")
-            urls = f.readlines()
-            f.close()
-            urls = urls[slice(start, len(urls))]
-            print(urls)
-
-            count = start + 1
-            driver.maximize_window()
-            for url in urls:
-                url = url[:-1]
-                print(url)
-                print(count)
-                count += 1
-                mas.append(analyz(url))
-    else:
-        driver.maximize_window()
-        driver.get("https://www.tiktok.com/")
-        try:
-            WebDriverWait(driver, delay).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "ev30f212")))
-            print("Page is ready!")
-        except TimeoutException:
-            raise Exception("NOT LOADED!")
-        LogIn.login()
-        time.sleep(5)
-
+    fails = 0
+    success = 0
+    with Live(auto_refresh=False, console=console) as live:
         for count in range(0, 10000):
-            print(count)
+            console.print(str(count))
+            loaded = False
+            while not loaded:
+                try:
+                    WebDriverWait(driver, DELAY).until(
+                        EC.presence_of_element_located((By.CLASS_NAME, "tiktok-lkdalv-VideoBasic")))
+
+                except TimeoutException:
+                    ActionChains(driver).send_keys(Keys.ARROW_DOWN).perform()
+                    time.sleep(0.5)
+                else:
+                    loaded = True
             try:
                 elem = driver.find_element(By.CLASS_NAME, "tiktok-lkdalv-VideoBasic")
                 url = elem.get_attribute("src")
             except Exception:
-                print("SRC WASNT LOADED!")
+                console.print("SRC WASNT LOADED!")
             else:
-                mas.append(analyz(url))
-
-            ActionChains(driver).send_keys(Keys.ARROW_DOWN).perform()
-            print("SCROLL!")
-            time.sleep(0.5)
-            loaded = False
-            while not loaded:
-                try:
-                    WebDriverWait(driver, delay).until(
-                        EC.presence_of_element_located((By.CLASS_NAME, "tiktok-lkdalv-VideoBasic")))
-
-                except TimeoutException:
-                    print("wasnt loaded!")
-
-                    print("SCROLL!")
-                    time.sleep(0.5)
+                perc, stat = analyz(url)
+                if perc != -1:
+                    arr.append(perc)
+                if stat == 1:
+                    success += 1
                 else:
-                    print("Page is ready!")
-                    loaded = True
+                    fails += 1
+            ActionChains(driver).send_keys(Keys.ARROW_DOWN).perform()
+            time.sleep(0.5)
+            print("MEAN ARR: ", str(mean(arr)))
+            live.update(update_table(str(mean(arr)), str(success), str(fails)), refresh=True)
 
-    big_data = np.array(mas)
-    print(f"The mean value is {big_data.mean()}")
-    print(f"The max value is {big_data.max()}")
-    t2 = time.time() - t1
-    print(f"Program running time is {t2} seconds")
-    print("Program finished!")
+
+
+
+
+
+def file():
+    success = 0
+    fails = 0
+    global CONSOLE
+    console = CONSOLE
+    global DWNLD
+    arr = []
+    while True:
+        file = input("URL file:")
+        if os.path.exists(file):
+            break
+        else:
+            console.print("File is not exist.")
+    start = int(input("Start from:"))  # Нужна защита от дурака?
+
+    with open(file, "r") as f:
+        urls = f.readlines()
+    urls = urls[slice(start, len(urls))]
+    count = start
+
+    driver = webdriver.Chrome()
+    DWNLD = Downloader(driver, DELAY)
+    driver.maximize_window()
+
+    console.print("\n")
+    with Live(auto_refresh=False, console=console) as live:
+        for url in urls:
+            count += 1
+            console.print(count)
+            res, stat = analyz(url[:-1])
+            if res != -1:
+                arr.append(res)
+            if stat == 1:
+                success += 1
+            else:
+                fails += 1
+            live.update(update_table(str(mean(arr)), str(success), str(fails)), refresh=True)
+
+
+def main():
+    global CONSOLE
+    global VTF
+    CONSOLE = Console()
+    db_init()
+    VTF = VidToFrames(1)
+    t1 = time.time()
+    is_file = Prompt.ask("From file or feed?", choices=["file", "feed"], default="feed")
+    if is_file == "file":
+        file()
+    else:
+        feed()
 
 
 if __name__ == '__main__':

@@ -25,7 +25,7 @@ class Downloader:
             self.__ssstik
         ]
         if path == "":
-            self.path = os.path.dirname(__file__) + "\\data\\"
+            self.path = os.path.dirname(__file__) + "\\data\\analyzing.mp4"
         else:
             self.path = path
 
@@ -50,7 +50,7 @@ class Downloader:
         if v_url == "":
             return ""
         v_path = self.__downloading(v_url)
-        return v_path
+        return v_path # Есть ли в этом смысл?
 
     def __ssstik(self, src):
         error = None
@@ -58,7 +58,6 @@ class Downloader:
         try:
             WebDriverWait(self.driver, self.delay).until(
                 EC.presence_of_element_located((By.ID, "main_page_text")))
-            print("Page is ready!")
         except Exception:
             raise Exception("Registration wasnt loaded")
 
@@ -68,7 +67,6 @@ class Downloader:
 
         try:
             WebDriverWait(self.driver, self.delay).until(EC.presence_of_element_located((By.CLASS_NAME, "pure-button")))
-            print("Page is ready!")
         except TimeoutException:
             try:
                 error = self.driver.find_element(By.ID, "alert-error")
@@ -95,7 +93,6 @@ class Downloader:
         try:
             WebDriverWait(self.driver, self.delay).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "download-block")))
-            print("Page is ready!")
         except TimeoutException:
             try:
                 error = self.driver.find_element(By.ID, "alert-error")
@@ -119,16 +116,8 @@ class Downloader:
             return url
 
     def __downloading(self, src):
-        filename = src.split('/')[-1]
-        if len(filename) > 10:
-            filename = filename[-10:]
-
-        if filename.find(".mp4") == -1:
-            filename += ".mp4"
-        print(src)
+        filename = "analyzing.mp4"
         r = requests.get(src, allow_redirects=True)
-        f_path = self.path + filename
-        f = open(f_path, "wb")
-        f.write(r.content)
-        f.close()
-        return f_path
+        with open(self.path, "wb") as f:
+            f.write(r.content)
+        return self.path
