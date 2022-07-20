@@ -72,26 +72,27 @@ def main():
         print("Page is ready!")
     except TimeoutException:
         raise Exception("NOT LOADED!")
-
-    send_search(driver, s_request, delay)
-    time.sleep(4)
-    old_height = driver.execute_script("return document.body.scrollHeight")
-    while True:
-        try:
-            scrolling(driver, delay)
-        except Exception as e:
-            print(e.args)
-        time.sleep(0.5)
-        new_height = driver.execute_script("return document.body.scrollHeight")
-        if new_height == old_height:
-            break
-        old_height = new_height
-
-    res = parsing(driver)
-    print("LEN: ", len(res))
+    f_r = open("searches.txt", "r")
     f = open("urls.txt", "w+")
-    for elem in res:
-        f.write(elem + '\n')
+    for item in f_r:
+        send_search(driver, item, delay)
+        time.sleep(4)
+        old_height = driver.execute_script("return document.body.scrollHeight")
+        while True:
+            try:
+                scrolling(driver, delay)
+            except Exception as e:
+                print(e.args)
+            time.sleep(0.5)
+            new_height = driver.execute_script("return document.body.scrollHeight")
+            if new_height == old_height:
+                break
+            old_height = new_height
+
+        res = parsing(driver)
+        print("LEN: ", len(res))
+        for elem in res:
+            f.write(elem + '\n')
 
 
 if __name__ == '__main__':
