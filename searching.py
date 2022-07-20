@@ -1,4 +1,3 @@
-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -6,9 +5,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 import time
+import os
 
 def send_search(driver, request,delay):
     srch = driver.find_element(By.CLASS_NAME, "ev30f212")
+    srch.clear()
     srch.send_keys(request)
     srch.send_keys(Keys.RETURN)
     try:
@@ -57,13 +58,14 @@ def main():
     options = webdriver.ChromeOptions()
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
 
-    # Обычно по 12 за скролл
-    s_request = input("What we will search?")
-    delay = 30
-
-    t1 = time.time()
+    delay = 10
+    while True:
+        file = input("URL file:")
+        if os.path.isfile(file):
+            break
+        else:
+            print("File is not exist.")
     driver = webdriver.Chrome(options=options)
-    # driver = webdriver.Chrome()
     driver.maximize_window()
     driver.get("https://www.tiktok.com/")
     try:
@@ -72,25 +74,26 @@ def main():
         print("Page is ready!")
     except TimeoutException:
         raise Exception("NOT LOADED!")
-    f_r = open("searches.txt", "r")
-    f = open("urls.txt", "w+")
-    for item in f_r:
-        send_search(driver, item, delay)
-        time.sleep(4)
-        old_height = driver.execute_script("return document.body.scrollHeight")
-        while True:
-            try:
-                scrolling(driver, delay)
-            except Exception as e:
-                print(e.args)
-            time.sleep(0.5)
-            new_height = driver.execute_script("return document.body.scrollHeight")
-            if new_height == old_height:
-                break
-            old_height = new_height
+    res = []
+    with open(file, "r", encoding='utf-8') as f_r:
+        for item in f_r:
+            send_search(driver, item, delay)
+            time.sleep(4)
+            old_height = driver.execute_script("return document.body.scrollHeight")
+            while True:
+                try:
+                    scrolling(driver, delay)
+                except Exception as e:
+                    print(e.args)
+                time.sleep(0.5)
+                new_height = driver.execute_script("return document.body.scrollHeight")
+                if new_height == old_height:
+                    break
+                old_height = new_height
+                res += parsing(driver)
 
-        res = parsing(driver)
-        print("LEN: ", len(res))
+    print("LEN: ", len(res))
+    with open("urls.txt", "w+") as f:
         for elem in res:
             f.write(elem + '\n')
 
