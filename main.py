@@ -60,7 +60,7 @@ def face_percent(fc_img):
     return percent
 
 
-def analyz(url):
+def analyz(url, channel =""):
     global CONSOLE
     global VIDEO_PER_CHANNEL
     global FACE_PERCENT
@@ -72,8 +72,6 @@ def analyz(url):
     start = url.find("@") + 1
     if start != 0:
         channel = url[start:url.find("/", start)]
-    else:
-        channel = "undefined"
     table = Table(show_header=True, header_style="bold magenta", show_lines=False, box=box.HEAVY_EDGE)
     table.add_column("Key", style="dim")
     table.add_column("Value")
@@ -150,7 +148,9 @@ def feed():
     global DWNLD
     global CONSOLE
     console = CONSOLE
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option("excludeSwitches", ["enable-logging"])
+    driver = webdriver.Chrome(options=options)
     DWNLD = Downloader(driver, DELAY)
     driver.maximize_window()
     driver.get("https://www.tiktok.com/")
@@ -161,7 +161,7 @@ def feed():
         raise Exception("NOT LOADED!")
     LogIn = TTLogger(driver, DELAY)
     LogIn.login()
-    time.sleep(5)
+    time.sleep(10)
 
     fails = 0
     success = 0
@@ -181,16 +181,21 @@ def feed():
                     loaded = True
             try:
                 elem = driver.find_element(By.CLASS_NAME, "tiktok-lkdalv-VideoBasic")
+                f_path = elem.find_element(By.XPATH, "./../../../../../..")
+                chn = f_path.find_element(By.CLASS_NAME, "emt6k1z0").text
+
                 url = elem.get_attribute("src")
             except Exception:
                 console.print("SRC WASNT LOADED!")
             else:
-                perc, stat = analyz(url)
+                perc, stat = analyz(url, chn)
                 if perc != -1:
                     arr.append(perc)
                 if stat == 1:
+                    # f_path.find_element(By.CLASS_NAME, "e1hk3hf90").click()
                     success += 1
                 else:
+                    # f_path.find_element(By.CLASS_NAME, "e1hk3hf90").click()
                     fails += 1
             ActionChains(driver).send_keys(Keys.ARROW_DOWN).perform()
             time.sleep(0.5)

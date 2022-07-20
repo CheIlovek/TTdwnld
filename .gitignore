@@ -1,7 +1,5 @@
-total.txt
-done
-done_old
 data
-done.rar
+done*
 test*.py
-
+*.txt
+venv
