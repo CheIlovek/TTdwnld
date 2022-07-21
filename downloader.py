@@ -29,6 +29,13 @@ class Downloader:
         else:
             self.path = path
 
+    def next_site(self):
+        if self.__site_id < len(self.__sites) - 1:
+            self.__site_id += 1
+        else:
+            self.__site_id = 0
+
+
     def dwnld(self, src):
         v_url = ""
         if src.find("www.tiktok.com/") != -1:
@@ -37,10 +44,7 @@ class Downloader:
                     v_url = self.__sites[self.__site_id](src)
                 except Exception as e:
                     print(str(e))
-                    if self.__site_id < len(self.__sites) - 1:
-                        self.__site_id += 1
-                    else:
-                        self.__site_id = 0
+                    self.next_site()
                 else:
                     if v_url != "":
                         break
@@ -53,12 +57,11 @@ class Downloader:
         return v_path # Есть ли в этом смысл?
 
     def __ssstik(self, src):
-        error = None
         self.driver.get('https://ssstik.io/en')
         try:
             WebDriverWait(self.driver, self.delay).until(
                 EC.presence_of_element_located((By.ID, "main_page_text")))
-        except Exception:
+        except TimeoutException:
             raise Exception("Registration wasnt loaded")
 
         search = self.driver.find_element(By.ID, "main_page_text")
@@ -66,25 +69,20 @@ class Downloader:
         ActionChains(self.driver).move_to_element(search).send_keys(src).send_keys(Keys.RETURN).perform()
 
         try:
-            WebDriverWait(self.driver, self.delay).until(EC.presence_of_element_located((By.CLASS_NAME, "pure-button")))
+            WebDriverWait(self.driver, self.delay).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "pure-button")))
         except TimeoutException:
-            try:
-                error = self.driver.find_element(By.ID, "alert-error")
-            finally:
-                if error is not None:
-                    raise Exception(error.text)
-                raise Exception("ssstik cannot be loaded!")
+            raise Exception("ssstik cannot be loaded!")
         search = self.driver.find_element(By.CLASS_NAME, "pure-button")
         url = ""
         try:
             url = search.get_attribute('href')
         except Exception:
-            url = -1
+            url = ""
         finally:
             return url
 
     def __snaptik(self, src):
-        error = None
         url = ""
         self.driver.get("https://snaptik.app/en")
         try:
@@ -99,12 +97,7 @@ class Downloader:
             WebDriverWait(self.driver, self.delay).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "download-block")))
         except TimeoutException:
-            try:
-                error = self.driver.find_element(By.ID, "alert-error")
-            finally:
-                if error is not None:
-                    raise Exception(error.text)
-                raise Exception("Snaptik cannot be loaded!")
+            raise Exception("Snaptik cannot be loaded!")
         elems = self.driver.find_element(By.CLASS_NAME, "download-block").find_elements(By.CLASS_NAME, "abutton")
         error = True
         for elem in elems:
@@ -116,12 +109,11 @@ class Downloader:
                 error = False
                 break
         if error:
-            return -1
+            return ""
         else:
             return url
 
     def __downloading(self, src):
-        filename = "analyzing.mp4"
         r = requests.get(src, allow_redirects=True)
         with open(self.path, "wb") as f:
             f.write(r.content)
