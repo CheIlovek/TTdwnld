@@ -73,7 +73,7 @@ class Downloader:
             finally:
                 if error is not None:
                     raise Exception(error.text)
-                raise Exception("Loading took too much time!")
+                raise Exception("ssstik cannot be loaded!")
         search = self.driver.find_element(By.CLASS_NAME, "pure-button")
         url = ""
         try:
@@ -87,6 +87,11 @@ class Downloader:
         error = None
         url = ""
         self.driver.get("https://snaptik.app/en")
+        try:
+            WebDriverWait(self.driver, self.delay).until(
+                EC.presence_of_element_located((By.ID, "url")))
+        except TimeoutException:
+            raise Exception("Loading took too much time!")
         elem = self.driver.find_element(By.ID, "url")
         elem.send_keys(src)
         elem.send_keys(Keys.RETURN)
@@ -99,7 +104,7 @@ class Downloader:
             finally:
                 if error is not None:
                     raise Exception(error.text)
-                raise Exception("Loading took too much time!")
+                raise Exception("Snaptik cannot be loaded!")
         elems = self.driver.find_element(By.CLASS_NAME, "download-block").find_elements(By.CLASS_NAME, "abutton")
         error = True
         for elem in elems:

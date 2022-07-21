@@ -23,7 +23,10 @@ class VidToFrames:
 
     def from_video_to_frames(self, video_file):
         self.FRAMES_PATH.clear()
-        video_clip = VideoFileClip(video_file)
+        try:
+            video_clip = VideoFileClip(video_file)
+        except OSError:
+            return ""
         changed_name = False
         fullpath = video_file
         if video_clip.duration > 20:

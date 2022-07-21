@@ -27,7 +27,7 @@ VTF: VidToFrames
 
 CONSOLE: Console
 FACE_PERCENT = 17
-DELAY = 10
+DELAY = 30
 VIDEO_PER_CHANNEL = 3
 
 
@@ -35,16 +35,15 @@ def db_init():
     global CHANNELS_DB
     dict = os.path.dirname(__file__) + "\\done\\"
     for file in os.listdir(dict):
+        id = []
         file = file[:-4]
         separator = file.rfind("_")
         if separator != -1:
-            id = int(file[separator + 1:])
             channel = file[:separator]
             if channel in CHANNELS_DB:
-                if CHANNELS_DB[channel] < id:
-                    CHANNELS_DB[channel] = id
+                CHANNELS_DB[channel].append(int(file[separator + 1:]))
             else:
-                CHANNELS_DB[channel] = id
+                CHANNELS_DB[channel] = [int(file[separator + 1:])]
     print(CHANNELS_DB)
 
 
@@ -60,7 +59,7 @@ def face_percent(fc_img):
     return percent
 
 
-def analyz(url, channel =""):
+def analyz(url, channel ="", id=""):
     global CONSOLE
     global VIDEO_PER_CHANNEL
     global FACE_PERCENT
@@ -72,6 +71,8 @@ def analyz(url, channel =""):
     start = url.find("@") + 1
     if start != 0:
         channel = url[start:url.find("/", start)]
+    if id == "":
+        id = url[url.rfind("/") + 1:]
     table = Table(show_header=True, header_style="bold magenta", show_lines=False, box=box.HEAVY_EDGE)
     table.add_column("Key", style="dim")
     table.add_column("Value")
@@ -82,12 +83,11 @@ def analyz(url, channel =""):
     # анализирует видео по заданной ссылке и решает, удалить его или оставить
     # (если минимальный процент площади лица на протяжении всего видео больше FACE_PERCENT
     # то его видео сохраняется в папке done, а если меньше, то удаляется)
-    video_file = DWNLD.dwnld(url)
-    if video_file == "":
-        console.print("File cannot be loaded")
-        return -1, status
-    video_file = VTF.from_video_to_frames(video_file)
-
+    video_file = ""
+    while video_file == "":
+        video_file = DWNLD.dwnld(url)
+        video_file = VTF.from_video_to_frames(video_file)
+        time.sleep(1)
     path = video_file[:-4] + "\\"
     arr = []
     for frame_path in VTF.FRAMES_PATH:
@@ -105,20 +105,23 @@ def analyz(url, channel =""):
     if m > FACE_PERCENT:
         table.add_row("Min value:", str(m) + " %", style="green")
         num = None
-        if channel in CHANNELS_DB:
-            if CHANNELS_DB[channel] < VIDEO_PER_CHANNEL:
-                CHANNELS_DB[channel] += 1
-                num = CHANNELS_DB[channel]
+        can_be_added: bool
+        try:
+            can_be_added = len(CHANNELS_DB[channel]) < VIDEO_PER_CHANNEL and id not in CHANNELS_DB[channel]
+        except KeyError:
+            can_be_added = True
+            CHANNELS_DB[channel] = [id]
         else:
-            CHANNELS_DB[channel] = 1
-            num = 1
-        if num is None:
-            table.add_row("Result:", "The limit of videos from this channel has been exceeded", style="yellow")
+            if can_be_added:
+                CHANNELS_DB[channel].append(id)
+
+        if not can_be_added:
+            table.add_row("Result:", "Limit exceeded OR was added earlier", style="yellow")
         else:
-            done_path = video_file[:video_file.find("data")] + "done\\" + channel + "_" + str(num) + ".mp4"
+            done_path = video_file[:video_file.find("data")] + "done\\" + channel + "_" + id + ".mp4"
             try:
                 os.rename(video_file, done_path)
-            except Exception:
+            except FileExistsError:
                 table.add_row("Result:", "File was added earlier", style="yellow")
             else:
                 table.add_row("Result:", "Video is moved to Done", style="green")
@@ -172,7 +175,7 @@ def feed():
             while not loaded:
                 try:
                     WebDriverWait(driver, DELAY).until(
-                        EC.presence_of_element_located((By.CLASS_NAME, "tiktok-lkdalv-VideoBasic")))
+                        EC.presence_of_element_located((By.CLASS_NAME, "e1yey0rl4")))
 
                 except TimeoutException:
                     ActionChains(driver).send_keys(Keys.ARROW_DOWN).perform()
@@ -180,7 +183,7 @@ def feed():
                 else:
                     loaded = True
             try:
-                elem = driver.find_element(By.CLASS_NAME, "tiktok-lkdalv-VideoBasic")
+                elem = driver.find_element(By.CLASS_NAME, "e1yey0rl4")
                 f_path = elem.find_element(By.XPATH, "./../../../../../..")
                 chn = f_path.find_element(By.CLASS_NAME, "emt6k1z0").text
 
@@ -192,10 +195,9 @@ def feed():
                 if perc != -1:
                     arr.append(perc)
                 if stat == 1:
-                    # f_path.find_element(By.CLASS_NAME, "e1hk3hf90").click()
+                    f_path.find_element(By.CLASS_NAME, "e1hk3hf90").click()
                     success += 1
                 else:
-                    # f_path.find_element(By.CLASS_NAME, "e1hk3hf90").click()
                     fails += 1
             ActionChains(driver).send_keys(Keys.ARROW_DOWN).perform()
             time.sleep(0.5)
@@ -223,7 +225,9 @@ def file():
     urls = urls[slice(start, len(urls))]
     count = start
 
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option("excludeSwitches", ["enable-logging"])
+    driver = webdriver.Chrome(options=options)
     DWNLD = Downloader(driver, DELAY)
     driver.maximize_window()
 
