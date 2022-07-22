@@ -87,7 +87,6 @@ def analyz(url, channel ="", id=""):
     while video_file == "":
         video_file = DWNLD.dwnld(url)
         video_file = VTF.from_video_to_frames(video_file)
-        time.sleep(1)
     path = video_file[:-4] + "\\"
     arr = []
     for frame_path in VTF.FRAMES_PATH:
