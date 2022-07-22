@@ -1,12 +1,10 @@
 import requests
-from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 import os
-from selenium.webdriver.common.action_chains import ActionChains
 
 
 class Downloader:
@@ -22,7 +20,9 @@ class Downloader:
         self.delay = delay
         self.__sites = [
             self.__snaptik,
-            self.__ssstik
+            self.__ssstik,
+            self.__tikmate,
+            self.__fliptok,
         ]
         if path == "":
             self.path = os.path.dirname(__file__) + "\\data\\analyzing.mp4"
@@ -59,46 +59,91 @@ class Downloader:
     def __ssstik(self, src):
         self.driver.get('https://ssstik.io/en')
         try:
-            WebDriverWait(self.driver, self.delay).until(
-                EC.presence_of_element_located((By.ID, "main_page_text")))
+            search = WebDriverWait(self.driver, self.delay).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "input-lg"))
+            )
         except TimeoutException:
-            raise Exception("Registration wasnt loaded")
-
-        search = self.driver.find_element(By.ID, "main_page_text")
-        self.driver.implicitly_wait(10)
-        ActionChains(self.driver).move_to_element(search).send_keys(src).send_keys(Keys.RETURN).perform()
+            raise Exception("SSSTIK cannot be loaded!")
+        search.send_keys(src)
+        search.send_keys(Keys.RETURN)
 
         try:
-            WebDriverWait(self.driver, self.delay).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "pure-button")))
+            search = WebDriverWait(self.driver, self.delay).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "pure-button"))
+            )
         except TimeoutException:
-            raise Exception("ssstik cannot be loaded!")
-        search = self.driver.find_element(By.CLASS_NAME, "pure-button")
-        url = ""
-        try:
-            url = search.get_attribute('href')
-        except Exception:
-            url = ""
-        finally:
-            return url
+            raise Exception("SSSTIK cannot process URL")
+        url = search.get_attribute('href')
+        return url
 
     def __snaptik(self, src):
         url = ""
         self.driver.get("https://snaptik.app/en")
         try:
-            WebDriverWait(self.driver, self.delay).until(
-                EC.presence_of_element_located((By.ID, "url")))
+            elem = WebDriverWait(self.driver, self.delay).until(
+                EC.presence_of_element_located((By.ID, "url"))
+            )
         except TimeoutException:
-            raise Exception("Loading took too much time!")
-        elem = self.driver.find_element(By.ID, "url")
+            raise Exception("SNAPTIK cannot be loaded!")
         elem.send_keys(src)
         elem.send_keys(Keys.RETURN)
         try:
-            WebDriverWait(self.driver, self.delay).until(
+            elem = WebDriverWait(self.driver, self.delay).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "download-block")))
         except TimeoutException:
-            raise Exception("Snaptik cannot be loaded!")
-        elems = self.driver.find_element(By.CLASS_NAME, "download-block").find_elements(By.CLASS_NAME, "abutton")
+            raise Exception("SNAPTIK cannot process URL")
+        elems = elem.find_elements(By.CLASS_NAME, "abutton")
+        error = True
+        for elem in elems:
+            url = elem.get_attribute("href")
+            r = requests.get(url)
+            if r.text.find("Please complete the security check to access") != -1:
+                continue
+            if r.text.find("Error get link") == -1:
+                error = False
+                break
+        if error:
+            return ""
+        else:
+            return url
+
+    def __fliptok(self, url):
+        self.driver.get("https://fliptok.app/ru")
+        try:
+            WebDriverWait(self.driver, self.delay).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "link-input")))
+        except TimeoutException:
+            raise Exception("FLIPTOK cannot be loaded")
+        inp = self.driver.find_element(By.CLASS_NAME, "link-input")
+        inp.send_keys(url)
+        self.driver.find_element(By.ID, "download-btn").click()
+        try:
+            WebDriverWait(self.driver, self.delay).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "btn-primary")))
+        except TimeoutException:
+            raise Exception("FLIPTOK cannot process URL")
+
+        elem = self.driver.find_element(By.CLASS_NAME, "btn-primary")
+        url = elem.get_attribute("href")
+        return url
+
+    def __tikmate(self, src):
+        url = ""
+        self.driver.get("https://tikmate.online/?lang=ru")
+        try:
+            elem = WebDriverWait(self.driver, self.delay).until(
+                EC.presence_of_element_located((By.ID, "url"))
+            )
+        except TimeoutException:
+            raise Exception("TIKMATE cannot be loaded!")
+        elem.send_keys(src)
+        elem.send_keys(Keys.RETURN)
+        try:
+            elem = WebDriverWait(self.driver, self.delay).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "abuttons")))
+        except TimeoutException:
+            raise Exception("TIKMATE cannot process URL")
+        elems = elem.find_elements(By.CLASS_NAME, "abutton")
         error = True
         for elem in elems:
             url = elem.get_attribute("href")
