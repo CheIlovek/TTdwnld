@@ -85,8 +85,9 @@ def analyz(url, channel ="", id=""):
     # то его видео сохраняется в папке done, а если меньше, то удаляется)
     video_file = ""
     while video_file == "":
-        video_file = DWNLD.dwnld(url)
+        video_file = DWNLD.dwnld(url, id + ".mp4")
         video_file = VTF.from_video_to_frames(video_file)
+        DWNLD.next_site()
     path = video_file[:-4] + "\\"
     arr = []
     for frame_path in VTF.FRAMES_PATH:
@@ -103,7 +104,6 @@ def analyz(url, channel ="", id=""):
     m = min(arr)
     if m > FACE_PERCENT:
         table.add_row("Min value:", str(m) + " %", style="green")
-        num = None
         can_be_added: bool
         try:
             can_be_added = len(CHANNELS_DB[channel]) < VIDEO_PER_CHANNEL and id not in CHANNELS_DB[channel]

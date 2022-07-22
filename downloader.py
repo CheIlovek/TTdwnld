@@ -25,7 +25,7 @@ class Downloader:
             self.__fliptok,
         ]
         if path == "":
-            self.path = os.path.dirname(__file__) + "\\data\\analyzing.mp4"
+            self.path = os.path.dirname(__file__) + "\\data\\"
         else:
             self.path = path
 
@@ -36,7 +36,7 @@ class Downloader:
             self.__site_id = 0
 
 
-    def dwnld(self, src):
+    def dwnld(self, src, name):
         v_url = ""
         if src.find("www.tiktok.com/") != -1:
             for num in range(len(self.__sites)):
@@ -53,7 +53,7 @@ class Downloader:
 
         if v_url == "":
             return ""
-        v_path = self.__downloading(v_url)
+        v_path = self.__downloading(v_url, name)
         return v_path # Есть ли в этом смысл?
 
     def __ssstik(self, src):
@@ -158,8 +158,8 @@ class Downloader:
         else:
             return url
 
-    def __downloading(self, src):
+    def __downloading(self, src, name):
         r = requests.get(src, allow_redirects=True)
-        with open(self.path, "wb") as f:
+        with open(self.path + name, "wb") as f:
             f.write(r.content)
-        return self.path
+        return self.path + name
