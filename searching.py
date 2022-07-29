@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+import requests
 import time
 import os
 
@@ -50,6 +51,11 @@ def parsing(driver):
     urls = []
     divs = driver.find_elements(By.CLASS_NAME, "tiktok-yz6ijl-DivWrapper")
     for div in divs:
+        img = div.find_element(By.TAG_NAME, "img").get_attribute("src")
+        r = requests.get(img, allow_redirects=True)
+        with open("the_image.jpg", "wb") as f:
+            f.write(r.content)
+        # Проверка превью
         urls.append(div.find_element(By.TAG_NAME, "a").get_attribute("href"))
     return urls
 
@@ -90,7 +96,7 @@ def main():
                 if new_height == old_height:
                     break
                 old_height = new_height
-                res += parsing(driver)
+            res = parsing(driver)
 
     print("LEN: ", len(res))
     with open("urls.txt", "w+") as f:
