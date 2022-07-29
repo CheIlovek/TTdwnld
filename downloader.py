@@ -21,7 +21,6 @@ class Downloader:
         self.__sites = [
             self.__snaptik,
             self.__ssstik,
-            self.__tikmate,
             self.__fliptok,
         ]
         if path == "":
@@ -127,7 +126,7 @@ class Downloader:
         url = elem.get_attribute("href")
         return url
 
-    def __tikmate(self, src):
+    def __tikmate(self, src): #Шото с ним не так
         url = ""
         self.driver.get("https://tikmate.online/?lang=ru")
         try:
