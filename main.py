@@ -35,7 +35,6 @@ def db_init():
     global CHANNELS_DB
     dict = os.path.dirname(__file__) + "\\done\\"
     for file in os.listdir(dict):
-        id = []
         file = file[:-4]
         separator = file.rfind("_")
         if separator != -1:
@@ -68,26 +67,42 @@ def analyz(url, channel ="", id=""):
     global CHANNELS_DB
     console = CONSOLE
     status = 0
+
+    table = Table(show_header=True, header_style="bold magenta", show_lines=False, box=box.HEAVY_EDGE)
+    table.add_column("Key", style="dim")
+    table.add_column("Value")
+    table.add_row("URL", url)
+
     start = url.find("@") + 1
     if start != 0:
         channel = url[start:url.find("/", start)]
     if id == "":
         id = url[url.rfind("/") + 1:]
-    table = Table(show_header=True, header_style="bold magenta", show_lines=False, box=box.HEAVY_EDGE)
-    table.add_column("Key", style="dim")
-    table.add_column("Value")
-    table.add_row("URL", url)
     table.add_row("Channel", channel)
+    limit = False
+    try:
+        limit = len(CHANNELS_DB[channel]) >= VIDEO_PER_CHANNEL or id in CHANNELS_DB[channel]
+    except KeyError:
+        limit = False
+    finally:
+        if limit:
+            table.add_row("Result:", "Channel limit exceeded OR was added earlier", style="yellow")
+            console.print(table)
+            return 0, 0
+
 
 
     # анализирует видео по заданной ссылке и решает, удалить его или оставить
     # (если минимальный процент площади лица на протяжении всего видео больше FACE_PERCENT
     # то его видео сохраняется в папке done, а если меньше, то удаляется)
-    video_file = ""
-    while video_file == "":
-        video_file = DWNLD.dwnld(url, id + ".mp4")
-        video_file = VTF.from_video_to_frames(video_file)
-        DWNLD.next_site()
+
+    video_file = DWNLD.dwnld(url, id + ".mp4")
+    video_file = VTF.from_video_to_frames(video_file)
+    if video_file == "":
+        table.add_row("Result:", "Video cannot be loaded", style="red")
+        console.print(table)
+        return 0, 0
+
     path = video_file[:-4] + "\\"
     arr = []
     for frame_path in VTF.FRAMES_PATH:
@@ -96,39 +111,30 @@ def analyz(url, channel ="", id=""):
         arr.append(face_per)
         if face_per == 0:
             break
-    m = mean(arr)
-    if m > FACE_PERCENT:
-        table.add_row("Mean value:", str(m) + " %", style="green")
-    else:
-        table.add_row("Mean value:", str(m) + " %", style="red")
+
     m = min(arr)
     if m > FACE_PERCENT:
+        table.add_row("Mean value:", str(mean(arr)) + " %", style="green")
         table.add_row("Min value:", str(m) + " %", style="green")
-        can_be_added: bool
         try:
-            can_be_added = len(CHANNELS_DB[channel]) < VIDEO_PER_CHANNEL and id not in CHANNELS_DB[channel]
+            CHANNELS_DB[channel].append(id)
         except KeyError:
-            can_be_added = True
             CHANNELS_DB[channel] = [id]
-        else:
-            if can_be_added:
-                CHANNELS_DB[channel].append(id)
 
-        if not can_be_added:
-            table.add_row("Result:", "Limit exceeded OR was added earlier", style="yellow")
+        done_path = video_file[:video_file.find("data")] + "done\\" + channel + "_" + id + ".mp4"
+        try:
+            os.rename(video_file, done_path)
+        except FileExistsError:
+            table.add_row("Result:", "File was added earlier", style="yellow")
         else:
-            done_path = video_file[:video_file.find("data")] + "done\\" + channel + "_" + id + ".mp4"
-            try:
-                os.rename(video_file, done_path)
-            except FileExistsError:
-                table.add_row("Result:", "File was added earlier", style="yellow")
-            else:
-                table.add_row("Result:", "Video is moved to Done", style="green")
-                status = 1
+            table.add_row("Result:", "Video is moved to Done", style="green")
+            status = 1
     else:
+        table.add_row("Mean value:", str(mean(arr)) + " %", style="red")
         table.add_row("Min value:", str(m) + " %", style="red")
         os.remove(video_file)
         table.add_row("Result:", "Video is deleted", style="red")
+
     shutil.rmtree(path)
     console.print(table)
     return m, status
@@ -251,7 +257,6 @@ def main():
     CONSOLE = Console()
     db_init()
     VTF = VidToFrames(1)
-    t1 = time.time()
     is_file = Prompt.ask("From file or feed?", choices=["file", "feed"], default="feed")
     if is_file == "file":
         file()
