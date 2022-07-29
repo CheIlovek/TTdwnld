@@ -50,7 +50,10 @@ class VidToFrames:
             frame_duration_formatted = self.format_timedelta(timedelta(seconds=current_duration)).replace(":", "-")
             frame_filename = os.path.join(filename, f"frame{frame_duration_formatted}.jpg")
             self.FRAMES_PATH.append(frame_filename)
-            video_clip.save_frame(frame_filename, current_duration)
+            try:
+                video_clip.save_frame(frame_filename, current_duration)
+            except OSError:
+                return ""
         video_clip.close()
         if changed_name:
             os.remove(video_file)
