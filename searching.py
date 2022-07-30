@@ -7,6 +7,8 @@ from selenium.common.exceptions import TimeoutException
 import requests
 import time
 import os
+import face_recognition as fc
+from PIL import Image
 
 def send_search(driver, request,delay):
     srch = driver.find_element(By.CLASS_NAME, "ev30f212")
@@ -47,7 +49,7 @@ def scrolling(driver, delay):
         else:
             clicked = True
 
-def parsing(driver):
+def parsing(driver, PERSENT):
     urls = []
     divs = driver.find_elements(By.CLASS_NAME, "tiktok-yz6ijl-DivWrapper")
     for div in divs:
@@ -56,11 +58,31 @@ def parsing(driver):
         with open("the_image.jpg", "wb") as f:
             f.write(r.content)
         # Проверка превью
-        urls.append(div.find_element(By.TAG_NAME, "a").get_attribute("href"))
+        img = fc.load_image_file("the_image.jpg")
+        face_per = face_percent(img)
+        if(face_per >= PERSENT):
+            urls.append(div.find_element(By.TAG_NAME, "a").get_attribute("href"))
+        else:
+            print(div.find_element(By.TAG_NAME, "a").get_attribute("href"), end=" ")
+            print("IS NOT SAVED!")
     return urls
 
 
+def face_percent(fc_img):
+    # возвращает процент площади, которую занимает лицо на заданном изображении
+    fc_loc = fc.face_locations(fc_img)
+    pil_img = Image.fromarray(fc_img)
+    width, height = pil_img.size
+    if len(fc_loc) != 1:
+        percent = 0
+    else:
+        percent = (((fc_loc[0][2] - fc_loc[0][0]) * (fc_loc[0][1] - fc_loc[0][3])) / (width * height)) * 100
+    return percent
+
+
 def main():
+    PERSENT = 17
+
     options = webdriver.ChromeOptions()
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
 
@@ -96,7 +118,7 @@ def main():
                 if new_height == old_height:
                     break
                 old_height = new_height
-            res = parsing(driver)
+            res = parsing(driver, PERSENT)
 
     print("LEN: ", len(res))
     with open("urls.txt", "w+") as f:
