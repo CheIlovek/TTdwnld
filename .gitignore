@@ -2,4 +2,5 @@ data
 done*
 test*.py
 *.txt
+images
 venv

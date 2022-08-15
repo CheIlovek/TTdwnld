@@ -93,9 +93,10 @@ class Downloader:
             raise Exception("SNAPTIK cannot process URL")
         elems = elem.find_elements(By.CLASS_NAME, "abutton")
         error = True
+
         for elem in elems:
             url = elem.get_attribute("href")
-            r = requests.get(url)
+            r = requests.get(url, allow_redirects=True)
             if r.text.find("Please complete the security check to access") != -1:
                 continue
             if r.text.find("Error get link") == -1:
@@ -146,7 +147,7 @@ class Downloader:
         error = True
         for elem in elems:
             url = elem.get_attribute("href")
-            r = requests.get(url)
+            r = requests.get(url, allow_redirects=True)
             if r.text.find("Please complete the security check to access") != -1:
                 continue
             if r.text.find("Error get link") == -1:
@@ -158,7 +159,8 @@ class Downloader:
             return url
 
     def __downloading(self, src, name):
-        r = requests.get(src, allow_redirects=True)
+
+        r = requests.get(src)
         with open(self.path + name, "wb") as f:
             f.write(r.content)
         return self.path + name

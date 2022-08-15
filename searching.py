@@ -34,7 +34,7 @@ def scrolling(driver, delay):
     html = driver.find_element(By.TAG_NAME, 'html')
     # html.send_keys(Keys.END)
     try:
-        WebDriverWait(driver, delay*3).until(
+        WebDriverWait(driver, delay).until(
             EC.presence_of_element_located((By.CLASS_NAME, "e17vxm6m1")))
         print("Page is ready!")
     except TimeoutException:
@@ -63,7 +63,7 @@ def parsing(driver, PERSENT):
         if(face_per >= PERSENT):
             urls.append(div.find_element(By.TAG_NAME, "a").get_attribute("href"))
         else:
-            print(div.find_element(By.TAG_NAME, "a").get_attribute("href"), end=" ")
+        #     print(div.find_element(By.TAG_NAME, "a").get_attribute("href"), end=" ")
             print("IS NOT SAVED!")
     return urls
 
@@ -81,12 +81,12 @@ def face_percent(fc_img):
 
 
 def main():
-    PERSENT = 17
+    PERSENT = 10
 
     options = webdriver.ChromeOptions()
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
 
-    delay = 10
+    delay = 20
     while True:
         file = input("URL file:")
         if os.path.isfile(file):

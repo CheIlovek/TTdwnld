@@ -109,7 +109,7 @@ def analyz(url, channel ="", id=""):
         image = fc.load_image_file(frame_path)
         face_per = face_percent(image)
         arr.append(face_per)
-        if face_per == 0:
+        if face_per < FACE_PERCENT:
             break
 
     m = min(arr)
