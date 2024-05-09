@@ -1,0 +1,91 @@
+[24732:2400:0428/170437.085:WARNING:chrome_main_delegate.cc(747)] This is Chrome version 124.0.6367.63 (not a warning)
+[24732:2400:0428/170437.166:INFO:chrome_browser_cloud_management_controller.cc(168)] Starting CBCM Controller Initialization
+[24732:2400:0428/170437.167:INFO:chrome_browser_cloud_management_controller.cc(196)] No machine level policy manager exists.
+[24732:2400:0428/170437.228:WARNING:browser_management_service.cc(128)] EnterpriseLogoUrl fetch failed with error code -1 and MIME type 
+[19792:14468:0428/170437.520:WARNING:runtime_features.cc(730)] AttributionReportingCrossAppWeb cannot be enabled in this configuration. Use --enable-features=ConversionMeasurement,AttributionReportingCrossAppWeb in addition.
+[27920:22764:0428/170437.548:WARNING:runtime_features.cc(730)] AttributionReportingCrossAppWeb cannot be enabled in this configuration. Use --enable-features=ConversionMeasurement,AttributionReportingCrossAppWeb in addition.
+[24956:7788:0428/170437.770:WARNING:runtime_features.cc(730)] AttributionReportingCrossAppWeb cannot be enabled in this configuration. Use --enable-features=ConversionMeasurement,AttributionReportingCrossAppWeb in addition.
+[22476:1388:0428/170437.812:WARNING:runtime_features.cc(730)] AttributionReportingCrossAppWeb cannot be enabled in this configuration. Use --enable-features=ConversionMeasurement,AttributionReportingCrossAppWeb in addition.
+[22880:25564:0428/170440.337:WARNING:spdy_session.cc(2712)] Received RST for invalid stream7
+[24732:2400:0428/170441.720:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'interest-cohort'.", source:  (0)
+[24732:2400:0428/170441.758:INFO:CONSOLE(328)] "loaded page with correlation id 413a6b60-0568-11ef-9a5f-93b1d34e1514", source: https://store.epicgames.com/ru/ (328)
+[20660:24868:0428/170442.087:WARNING:runtime_features.cc(730)] AttributionReportingCrossAppWeb cannot be enabled in this configuration. Use --enable-features=ConversionMeasurement,AttributionReportingCrossAppWeb in addition.
+[24732:2400:0428/170444.371:INFO:CONSOLE(2)] "Unsatisfied version 17.0.2 from diesel-site of shared singleton module react-dom (required ^16.13.1)", source: https://static-assets-prod.epicgames.com/epic-store/static/webpack/main.egstore-site.949b825de0b31d3b1370.js (2)
+[24732:2400:0428/170444.371:INFO:CONSOLE(2)] "Unsatisfied version 17.0.2 from diesel-site of shared singleton module react (required ^16.3.2)", source: https://static-assets-prod.epicgames.com/epic-store/static/webpack/main.egstore-site.949b825de0b31d3b1370.js (2)
+[24732:2400:0428/170444.371:INFO:CONSOLE(2)] "Unsatisfied version 17.0.2 from diesel-site of shared singleton module react-dom (required ^16.3.2)", source: https://static-assets-prod.epicgames.com/epic-store/static/webpack/main.egstore-site.949b825de0b31d3b1370.js (2)
+[24732:2400:0428/170444.371:INFO:CONSOLE(2)] "Unsatisfied version 17.0.2 from diesel-site of shared singleton module react (required ^15.0.0 || ^16.0.0)", source: https://static-assets-prod.epicgames.com/epic-store/static/webpack/main.egstore-site.949b825de0b31d3b1370.js (2)
+[24732:2400:0428/170444.371:INFO:CONSOLE(2)] "Unsatisfied version 17.0.2 from diesel-site of shared singleton module react (required ^15.4.1 || ^16.1.0)", source: https://static-assets-prod.epicgames.com/epic-store/static/webpack/main.egstore-site.949b825de0b31d3b1370.js (2)
+[24732:2400:0428/170444.372:INFO:CONSOLE(2)] "Unsatisfied version 17.0.2 from diesel-site of shared singleton module react (required ^15.5.4)", source: https://static-assets-prod.epicgames.com/epic-store/static/webpack/main.egstore-site.949b825de0b31d3b1370.js (2)
+[24732:2400:0428/170445.997:INFO:CONSOLE(20)] "Launcher Integration configured for Web", source: https://static-assets-prod.epicgames.com/epic-store/static/webpack/Vendor.egstore-site.fc20f5bc2b4c4b3c2927.js (20)
+[24732:2400:0428/170445.997:INFO:CONSOLE(20)] "Lower-casing object properties on root.ue", source: https://static-assets-prod.epicgames.com/epic-store/static/webpack/Vendor.egstore-site.fc20f5bc2b4c4b3c2927.js (20)
+[24732:2400:0428/170446.325:INFO:CONSOLE(2)] "loadable: `loadableReady()` requires state, please use `getScriptTags` or `getScriptElements` server-side", source: https://static-assets-prod.epicgames.com/epic-store/static/webpack/Vendor.egstore-site.fc20f5bc2b4c4b3c2927.js (2)
+[24732:2400:0428/170446.337:INFO:CONSOLE(2)] "LauncherIntegration'  ! Switching to v2 Purchase Flow !", source: https://static-assets-prod.epicgames.com/epic-store/static/webpack/Vendor.egstore-site.fc20f5bc2b4c4b3c2927.js (2)
+[24732:2400:0428/170446.337:INFO:CONSOLE(2)] "LauncherIntegration'  Window object found for marketplace. (ue.webmarketplace)", source: https://static-assets-prod.epicgames.com/epic-store/static/webpack/Vendor.egstore-site.fc20f5bc2b4c4b3c2927.js (2)
+[24732:2400:0428/170446.337:INFO:CONSOLE(2)] "LauncherIntegration'  Window object found for Purchase Flow. (ue.purchaseflow)", source: https://static-assets-prod.epicgames.com/epic-store/static/webpack/Vendor.egstore-site.fc20f5bc2b4c4b3c2927.js (2)
+[24732:2400:0428/170446.338:INFO:CONSOLE(2)] "Launcher Integration - Checking for purchase in progress", source: https://static-assets-prod.epicgames.com/epic-store/static/webpack/Vendor.egstore-site.fc20f5bc2b4c4b3c2927.js (2)
+[24732:2400:0428/170446.338:INFO:CONSOLE(2)] "invalid hash location or offer info", source: https://static-assets-prod.epicgames.com/epic-store/static/webpack/Vendor.egstore-site.fc20f5bc2b4c4b3c2927.js (2)
+[24732:2400:0428/170449.005:INFO:CONSOLE(2)] "Service workers are not supported by this browser", source: https://static-assets-prod.epicgames.com/epic-store/static/webpack/Vendor.egstore-site.fc20f5bc2b4c4b3c2927.js (2)
+[24732:2400:0428/170449.005:INFO:CONSOLE(2)] "TypeError: Failed to register a ServiceWorker for scope ('https://store.epicgames.com/') with script ('https://store.epicgames.com/epic-service-worker.js'): A bad HTTP response code (403) was received when fetching the script.", source: https://static-assets-prod.epicgames.com/epic-store/static/webpack/Vendor.egstore-site.fc20f5bc2b4c4b3c2927.js (2)
+[9564:18832:0428/170449.354:WARNING:runtime_features.cc(730)] AttributionReportingCrossAppWeb cannot be enabled in this configuration. Use --enable-features=ConversionMeasurement,AttributionReportingCrossAppWeb in addition.
+[5032:26432:0428/170449.487:WARNING:runtime_features.cc(730)] AttributionReportingCrossAppWeb cannot be enabled in this configuration. Use --enable-features=ConversionMeasurement,AttributionReportingCrossAppWeb in addition.
+[27212:21348:0428/170451.812:WARNING:runtime_features.cc(730)] AttributionReportingCrossAppWeb cannot be enabled in this configuration. Use --enable-features=ConversionMeasurement,AttributionReportingCrossAppWeb in addition.
+[24732:2400:0428/170451.848:WARNING:CONSOLE(0)] "Third-party cookie will be blocked. Learn more in the Issues tab.", source: chrome://new-tab-page/ (0)
+[24732:2400:0428/170451.848:WARNING:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ch-ua-form-factor'.", source:  (0)
+[24732:2400:0428/170452.200:WARNING:CONSOLE(0)] "Third-party cookie will be blocked. Learn more in the Issues tab.", source: chrome://new-tab-page/ (0)
+[24732:2400:0428/170452.200:WARNING:CONSOLE(0)] "Third-party cookie will be blocked. Learn more in the Issues tab.", source: chrome://new-tab-page/ (0)
+[24732:2400:0428/170453.005:WARNING:CONSOLE(0)] "Third-party cookie will be blocked. Learn more in the Issues tab.", source: chrome://new-tab-page/ (0)
+[20620:18276:0428/170453.443:WARNING:runtime_features.cc(730)] AttributionReportingCrossAppWeb cannot be enabled in this configuration. Use --enable-features=ConversionMeasurement,AttributionReportingCrossAppWeb in addition.
+[22880:25564:0428/170453.490:WARNING:spdy_session.cc(2980)] Received HEADERS for invalid stream 3
+[24732:2400:0428/170454.321:WARNING:controller_impl.cc(1191)] Background download complete, client: 6, completion type: 0, file size:5160
+[24732:2400:0428/170454.390:WARNING:controller_impl.cc(1191)] Background download complete, client: 6, completion type: 0, file size:265059
+[24732:2400:0428/170454.564:INFO:CONSOLE(40)] "[Report Only] This document requires 'TrustedHTML' assignment.", source: https://www.gstatic.com/external_hosted/lottie_player/lottie_player_binary-bundle.js (40)
+[24732:2400:0428/170455.286:WARNING:controller_impl.cc(1191)] Background download complete, client: 6, completion type: 0, file size:2200227
+[24732:2400:0428/170455.829:WARNING:controller_impl.cc(1191)] Background download complete, client: 6, completion type: 0, file size:45148
+[24732:2400:0428/170455.963:WARNING:controller_impl.cc(1191)] Background download complete, client: 6, completion type: 0, file size:2747170
+[24732:2400:0428/170456.314:WARNING:controller_impl.cc(1191)] Background download complete, client: 6, completion type: 0, file size:3844
+[24732:2400:0428/170456.834:WARNING:controller_impl.cc(1191)] Background download complete, client: 6, completion type: 0, file size:4680
+[24732:2400:0428/170456.946:WARNING:controller_impl.cc(1191)] Background download complete, client: 6, completion type: 0, file size:1463571
+[22648:28648:0428/170457.174:WARNING:runtime_features.cc(730)] AttributionReportingCrossAppWeb cannot be enabled in this configuration. Use --enable-features=ConversionMeasurement,AttributionReportingCrossAppWeb in addition.
+[24732:2400:0428/170457.215:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ch-ua-form-factor'.", source:  (0)
+[22880:25564:0428/170457.219:WARNING:spdy_session.cc(2980)] Received HEADERS for invalid stream 7
+[24732:2400:0428/170457.303:INFO:CONSOLE(0)] "[DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o", source: https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fmyaccount.google.com%3Futm_source%3Daccount-marketing-page%26utm_medium%3Dgo-to-account-button&ifkv=AaSxoQz00GkOFC9E434nncLpJNi818S26gVcIeaKLJ8fJRpVwNHWFWGh5kviEg7ztR_Hc4whOKkI&service=accountsettings&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1744892272%3A1714313096042727&theme=mn&ddm=0 (0)
+[24732:2400:0428/170457.310:INFO:CONSOLE(295)] "%c%s color: red; background: yellow; font-size: 24px; ВНИМАНИЕ!", source: https://www.gstatic.com/_/mss/boq-identity/_/js/k=boq-identity.AccountsSignInUi.ru.FipZYXnvtZg.es5.O/am=PsAiunEsAGLEeeADFAVCBgAAAAAAAAAArAFmBg/d=1/excm=_b,_tp,identifierview/ed=1/dg=0/wt=2/ujg=1/rs=AOaEmlHUkhEpcDXd109_YpalraoCCWj5_w/m=_b,_tp (295)
+[24732:2400:0428/170457.310:INFO:CONSOLE(295)] "%c%s font-size: 18px; При использовании этой консоли вы можете подвергнуться атаке Self-XSS, что позволит злоумышленникам совершать действия от вашего имени и получать доступ к вашим личным данным.
+Не вводите и не вставляйте программный код, который не понимаете.", source: https://www.gstatic.com/_/mss/boq-identity/_/js/k=boq-identity.AccountsSignInUi.ru.FipZYXnvtZg.es5.O/am=PsAiunEsAGLEeeADFAVCBgAAAAAAAAAArAFmBg/d=1/excm=_b,_tp,identifierview/ed=1/dg=0/wt=2/ujg=1/rs=AOaEmlHUkhEpcDXd109_YpalraoCCWj5_w/m=_b,_tp (295)
+[24732:2400:0428/170458.109:ERROR:device_event_log_impl.cc(195)] [17:04:58.109] Bluetooth: bluetooth_adapter_winrt.cc:1056 Getting Default Adapter failed.
+[21576:2596:0428/170458.460:WARNING:runtime_features.cc(730)] AttributionReportingCrossAppWeb cannot be enabled in this configuration. Use --enable-features=ConversionMeasurement,AttributionReportingCrossAppWeb in addition.
+[24732:2400:0428/170458.717:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ch-ua-form-factor'.", source:  (0)
+[24732:2400:0428/170458.776:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ch-ua-form-factor'.", source:  (0)
+[24732:2400:0428/170500.066:WARNING:capture_device_ranking.h(255)] Can't initialize the value of media.audio_input.user_preference_ranking because media.default_audio_capture_device isn't registered or is empty
+[24732:2400:0428/170500.066:WARNING:capture_device_ranking.h(255)] Can't initialize the value of media.video_input.user_preference_ranking because media.default_video_capture_Device isn't registered or is empty
+[24732:2400:0428/170500.066:WARNING:capture_device_ranking.h(255)] Can't initialize the value of media.audio_input.user_preference_ranking because media.default_audio_capture_device isn't registered or is empty
+[24732:2400:0428/170500.066:WARNING:capture_device_ranking.h(255)] Can't initialize the value of media.video_input.user_preference_ranking because media.default_video_capture_Device isn't registered or is empty
+[24732:2400:0428/170507.646:WARNING:capture_device_ranking.h(255)] Can't initialize the value of media.audio_input.user_preference_ranking because media.default_audio_capture_device isn't registered or is empty
+[24732:2400:0428/170507.646:WARNING:capture_device_ranking.h(255)] Can't initialize the value of media.video_input.user_preference_ranking because media.default_video_capture_Device isn't registered or is empty
+[24732:2400:0428/170511.684:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ch-ua-form-factor'.", source:  (0)
+[22880:25564:0428/170511.689:WARNING:spdy_session.cc(2980)] Received HEADERS for invalid stream 3
+[14504:24864:0428/170511.753:WARNING:runtime_features.cc(730)] AttributionReportingCrossAppWeb cannot be enabled in this configuration. Use --enable-features=ConversionMeasurement,AttributionReportingCrossAppWeb in addition.
+[24732:2400:0428/170511.801:INFO:CONSOLE(321)] "%c%s color: red; background: yellow; font-size: 24px; WARNING!", source: https://www.gstatic.com/_/mss/boq-googlegrowth/_/js/k=boq-googlegrowth.GrowthOnboardUi.en.OFtaxEH-sEw.es5.O/am=gEV0BggD/d=1/excm=_b,_tp,landingview/ed=1/dg=0/wt=2/ujg=1/rs=AF-uQDnoXwW9hWTZcs590eXXEL-O3EIBqA/m=_b,_tp (321)
+[24732:2400:0428/170511.801:INFO:CONSOLE(321)] "%c%s font-size: 18px; Using this console may allow attackers to impersonate you and steal your information using an attack called Self-XSS.
+Do not enter or paste code that you do not understand.", source: https://www.gstatic.com/_/mss/boq-googlegrowth/_/js/k=boq-googlegrowth.GrowthOnboardUi.en.OFtaxEH-sEw.es5.O/am=gEV0BggD/d=1/excm=_b,_tp,landingview/ed=1/dg=0/wt=2/ujg=1/rs=AF-uQDnoXwW9hWTZcs590eXXEL-O3EIBqA/m=_b,_tp (321)
+[8204:28376:0428/170515.493:WARNING:runtime_features.cc(730)] AttributionReportingCrossAppWeb cannot be enabled in this configuration. Use --enable-features=ConversionMeasurement,AttributionReportingCrossAppWeb in addition.
+[24732:2400:0428/170516.354:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ch-ua-form-factor'.", source:  (0)
+[22880:25564:0428/170516.364:WARNING:spdy_session.cc(2980)] Received HEADERS for invalid stream 19
+[22880:25564:0428/170516.364:WARNING:spdy_session.cc(2980)] Received HEADERS for invalid stream 17
+[24732:2400:0428/170516.452:INFO:CONSOLE(314)] "%c%s color: red; background: yellow; font-size: 24px; WARNING!", source: https://www.gstatic.com/_/mss/boq-identity/_/js/k=boq-identity.AccountSettingsUi.en.Q9C-3Sh07g4.2019.O/am=AcBYHLMCpxjrUKRr3mZEwiYAEAAgAQBAAAAB/d=1/excm=_b,_tp,googleaccounthomeview/ed=1/dg=0/wt=2/ujg=1/rs=AOaEmlEfRSUQcFY_Chh2JvWP_IWud093dg/m=_b,_tp (314)
+[24732:2400:0428/170516.452:INFO:CONSOLE(314)] "%c%s font-size: 18px; Using this console may allow attackers to impersonate you and steal your information using an attack called Self-XSS.
+Do not enter or paste code that you do not understand.", source: https://www.gstatic.com/_/mss/boq-identity/_/js/k=boq-identity.AccountSettingsUi.en.Q9C-3Sh07g4.2019.O/am=AcBYHLMCpxjrUKRr3mZEwiYAEAAgAQBAAAAB/d=1/excm=_b,_tp,googleaccounthomeview/ed=1/dg=0/wt=2/ujg=1/rs=AOaEmlEfRSUQcFY_Chh2JvWP_IWud093dg/m=_b,_tp (314)
+[24732:2400:0428/170517.206:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ch-ua-form-factor'.", source:  (0)
+[24732:2400:0428/170517.206:INFO:CONSOLE(0)] "An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.", source: https://myaccount.google.com/profile-picture?origin=https%3A%2F%2Fmyaccount.google.com&hostId=ma&theme=light (0)
+[24732:2400:0428/170517.856:INFO:CONSOLE(0)] "Autofocus processing was blocked because a document already has a focused element.", source: https://myaccount.google.com/?utm_source=account-marketing-page&utm_medium=go-to-account-button&pli=1 (0)
+[24732:2400:0428/170518.773:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ch-ua-form-factor'.", source:  (0)
+[11528:9260:0428/170518.773:WARNING:runtime_features.cc(730)] AttributionReportingCrossAppWeb cannot be enabled in this configuration. Use --enable-features=ConversionMeasurement,AttributionReportingCrossAppWeb in addition.
+[24732:2400:0428/170521.319:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ch-ua-form-factor'.", source:  (0)
+[22880:25564:0428/170521.840:WARNING:spdy_session.cc(2980)] Received HEADERS for invalid stream 9
+[22880:25564:0428/170521.844:WARNING:spdy_session.cc(2980)] Received HEADERS for invalid stream 35
+[22880:25564:0428/170521.852:WARNING:spdy_session.cc(2980)] Received HEADERS for invalid stream 33
+[22880:25564:0428/170521.853:WARNING:spdy_session.cc(2980)] Received HEADERS for invalid stream 39
+[22880:17556:0428/170522.371:WARNING:sqlite_persistent_store_backend_base.cc(198)] Failed to post task from FlushAndNotifyInBackground@net\extras\sqlite\sqlite_persistent_store_backend_base.cc:247 to client_task_runner_.
+[22880:15560:0428/170522.380:WARNING:sqlite_persistent_store_backend_base.cc(198)] Failed to post task from FlushAndNotifyInBackground@net\extras\sqlite\sqlite_persistent_store_backend_base.cc:247 to client_task_runner_.
+[22880:15560:0428/170522.380:WARNING:sqlite_persistent_store_backend_base.cc(198)] Failed to post task from FlushAndNotifyInBackground@net\extras\sqlite\sqlite_persistent_store_backend_base.cc:247 to client_task_runner_.
+[24732:2400:0428/170522.864:WARNING:pref_notifier_impl.cc(41)] Pref observer for media_router.cast_allow_all_ips found at shutdown.

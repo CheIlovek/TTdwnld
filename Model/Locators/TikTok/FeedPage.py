@@ -1,0 +1,2 @@
+CURRENT_VIDEO = "//div[contains(@class,'e1yey0rl2')]/div" #get ID video xgwrapper-0-7332342275151760642 -> 7332342275151760642
+CURRENT_CHANNEL = CURRENT_VIDEO + "/../../../../../../div[1]//h3" #get text
