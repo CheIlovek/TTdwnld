@@ -13,289 +13,420 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QSplitter[objectName*=&quot;b_&quot;] {
+	padding: 10px;
+	border: 1px solid #000000;
+	border-radius: 4px;
+}
+QLabel[objectName*=&quot;b_&quot;] {
+	Font-weight: 600;
+	vertical-align:top
+}
+* {
+	font-family:Montserrat;
+	font-size:14px;
+}
+
+
+
+</string>
+  </property>
   <property name="locale">
    <locale language="Russian" country="Russia"/>
   </property>
-  <widget class="QPushButton" name="button_next">
-   <property name="geometry">
-    <rect>
-     <x>390</x>
-     <y>480</y>
-     <width>281</width>
-     <height>101</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>PushButton</string>
-   </property>
-  </widget>
-  <widget class="QSplitter" name="splitter_search_settings">
-   <property name="geometry">
-    <rect>
-     <x>310</x>
-     <y>70</y>
-     <width>145</width>
-     <height>76</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Orientation::Vertical</enum>
-   </property>
-   <widget class="QLabel" name="label_6">
-    <property name="text">
-     <string>Параметры поиска</string>
-    </property>
-   </widget>
-   <widget class="QSplitter" name="splitter_5">
-    <property name="orientation">
-     <enum>Qt::Orientation::Vertical</enum>
-    </property>
-    <widget class="QCheckBox" name="checkBox_3">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label_4">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">Font-weight: bold;
+</string>
+     </property>
      <property name="text">
-      <string>Поиск людей в очках</string>
+      <string>Настройки поиска в ленте</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::TextInteractionFlag::NoTextInteraction</set>
      </property>
     </widget>
-    <widget class="QCheckBox" name="checkBox_4">
-     <property name="text">
-      <string>Поиск людей в шапке</string>
+   </item>
+   <item>
+    <widget class="QSplitter" name="splitter_11">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
-    </widget>
-    <widget class="QCheckBox" name="checkBox_5">
-     <property name="text">
-      <string>CheckBox</string>
+     <property name="opaqueResize">
+      <bool>true</bool>
      </property>
-    </widget>
-   </widget>
-  </widget>
-  <widget class="QSplitter" name="splitter_AI">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>230</y>
-     <width>144</width>
-     <height>56</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Orientation::Vertical</enum>
-   </property>
-   <widget class="QLabel" name="label_5">
-    <property name="text">
-     <string>Используемые нейросети</string>
-    </property>
-   </widget>
-   <widget class="QSplitter" name="splitter_3">
-    <property name="orientation">
-     <enum>Qt::Orientation::Vertical</enum>
-    </property>
-    <widget class="QCheckBox" name="checkBox_OpenCV">
-     <property name="text">
-      <string>OpenCV</string>
+     <property name="handleWidth">
+      <number>50</number>
      </property>
-    </widget>
-    <widget class="QCheckBox" name="checkBox_face_rec">
-     <property name="text">
-      <string>Face Recognition (dlib)</string>
+     <property name="childrenCollapsible">
+      <bool>false</bool>
      </property>
+     <widget class="QSplitter" name="b_splitter_account">
+      <property name="orientation">
+       <enum>Qt::Orientation::Vertical</enum>
+      </property>
+      <widget class="QLabel" name="b_label_3">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Данные аккаунта сервиса:</string>
+       </property>
+      </widget>
+      <widget class="QSplitter" name="splitter">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Логин:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_login">
+        <property name="maximumSize">
+         <size>
+          <width>250</width>
+          <height>16777215</height>
+         </size>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QSplitter" name="splitter_2">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Пароль:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_password">
+        <property name="maximumSize">
+         <size>
+          <width>250</width>
+          <height>16777215</height>
+         </size>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="label_login_error">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="button_login_test">
+       <property name="text">
+        <string>Проверить</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QSplitter" name="b_splitter_search_settings">
+      <property name="orientation">
+       <enum>Qt::Orientation::Vertical</enum>
+      </property>
+      <widget class="QLabel" name="b_label_6">
+       <property name="text">
+        <string>Параметры поиска</string>
+       </property>
+      </widget>
+      <widget class="QSplitter" name="splitter_5">
+       <property name="orientation">
+        <enum>Qt::Orientation::Vertical</enum>
+       </property>
+       <widget class="QWidget" name="layoutWidget">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>Процент лица</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="spinBox">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </widget>
     </widget>
-   </widget>
-  </widget>
-  <widget class="QSplitter" name="spliter_paths">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>370</y>
-     <width>481</width>
-     <height>49</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Orientation::Vertical</enum>
-   </property>
-   <widget class="QSplitter" name="splitter_7">
-    <property name="orientation">
-     <enum>Qt::Orientation::Horizontal</enum>
-    </property>
-    <widget class="QLabel" name="label_8">
-     <property name="text">
-      <string>Путь для сохранения промежуточных данных:</string>
+   </item>
+   <item>
+    <widget class="QSplitter" name="splitter_12">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_buff_path"/>
-   </widget>
-   <widget class="QSplitter" name="splitter_9">
-    <property name="orientation">
-     <enum>Qt::Orientation::Horizontal</enum>
-    </property>
-    <widget class="QLabel" name="label_9">
-     <property name="text">
-      <string>Путь для сохранения датасета:</string>
+     <property name="handleWidth">
+      <number>50</number>
      </property>
+     <widget class="QSplitter" name="b_splitter_AI">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>106</height>
+       </size>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Orientation::Vertical</enum>
+      </property>
+      <widget class="QLabel" name="b_label_5">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Используемые нейросети</string>
+       </property>
+      </widget>
+      <widget class="QSplitter" name="splitter_3">
+       <property name="orientation">
+        <enum>Qt::Orientation::Vertical</enum>
+       </property>
+       <widget class="QCheckBox" name="checkBox_OpenCV">
+        <property name="text">
+         <string>OpenCV</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_dlib">
+        <property name="text">
+         <string>Face Recognition (dlib)</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QSplitter" name="b_splitter_10">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Orientation::Vertical</enum>
+      </property>
+      <widget class="QLabel" name="b_label_7">
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>Условие остановки поиска</string>
+       </property>
+      </widget>
+      <widget class="QSplitter" name="splitter_8">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <widget class="QSplitter" name="splitter_4">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <widget class="QRadioButton" name="radio_no_limit">
+         <property name="text">
+          <string>До ручной остановки</string>
+         </property>
+        </widget>
+        <widget class="QRadioButton" name="radio_time_limit">
+         <property name="text">
+          <string>По времени</string>
+         </property>
+        </widget>
+        <widget class="QRadioButton" name="radio_add_limit">
+         <property name="text">
+          <string>По количеству добавленных в БД видео</string>
+         </property>
+        </widget>
+        <widget class="QRadioButton" name="radio_check_limit">
+         <property name="text">
+          <string>По количеству обработанных видео</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QSplitter" name="splitter_6">
+        <property name="styleSheet">
+         <string notr="true">QSplitter {
+	padding-top: 20px
+}</string>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <widget class="QTimeEdit" name="timeEdit_time_limit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LayoutDirection::LeftToRight</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="currentSection">
+          <enum>QDateTimeEdit::Section::HourSection</enum>
+         </property>
+         <property name="displayFormat">
+          <string notr="true">HH:mm:ss</string>
+         </property>
+        </widget>
+        <widget class="QSpinBox" name="spinBox_add_limit">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+        </widget>
+        <widget class="QSpinBox" name="spinBox_check_limit">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+     </widget>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_save_path"/>
-   </widget>
-  </widget>
-  <widget class="QSplitter" name="splitter_account">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>60</y>
-     <width>211</width>
-     <height>121</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Orientation::Vertical</enum>
-   </property>
-   <widget class="QLabel" name="label_3">
-    <property name="text">
-     <string>Введите данные аккаунта</string>
-    </property>
-   </widget>
-   <widget class="QSplitter" name="splitter">
-    <property name="orientation">
-     <enum>Qt::Orientation::Horizontal</enum>
-    </property>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Логин:</string>
+   </item>
+   <item>
+    <widget class="QSplitter" name="b_spliter_paths">
+     <property name="maximumSize">
+      <size>
+       <width>855</width>
+       <height>80</height>
+      </size>
      </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_login"/>
-   </widget>
-   <widget class="QSplitter" name="splitter_2">
-    <property name="orientation">
-     <enum>Qt::Orientation::Horizontal</enum>
-    </property>
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Пароль:</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_password"/>
-   </widget>
-   <widget class="QLabel" name="label_login_error">
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="button_login_test">
-    <property name="text">
-     <string>Проверить</string>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>10</y>
-     <width>211</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Настройки поиска в ленте</string>
-   </property>
-  </widget>
-  <widget class="QSplitter" name="splitter_10">
-   <property name="geometry">
-    <rect>
-     <x>311</x>
-     <y>171</y>
-     <width>321</width>
-     <height>131</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Orientation::Vertical</enum>
-   </property>
-   <widget class="QLabel" name="label_7">
-    <property name="text">
-     <string>Условие остановки поиска</string>
-    </property>
-   </widget>
-   <widget class="QSplitter" name="splitter_8">
-    <property name="orientation">
-     <enum>Qt::Orientation::Horizontal</enum>
-    </property>
-    <widget class="QSplitter" name="splitter_4">
      <property name="orientation">
       <enum>Qt::Orientation::Vertical</enum>
      </property>
-     <widget class="QRadioButton" name="radio_no_limit">
-      <property name="text">
-       <string>До ручной остановки</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="radio_time_limit">
-      <property name="text">
-       <string>По времени</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="radio_add_limit">
-      <property name="text">
-       <string>По количеству добавленных в БД видео</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="radio_check_limit">
-      <property name="text">
-       <string>По количеству обработанных видео</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QSplitter" name="splitter_6">
-     <property name="orientation">
-      <enum>Qt::Orientation::Vertical</enum>
+     <property name="handleWidth">
+      <number>10</number>
      </property>
-     <widget class="QTimeEdit" name="timeEdit_time_limit">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
+     <property name="childrenCollapsible">
+      <bool>true</bool>
+     </property>
+     <widget class="QSplitter" name="splitter_7">
+      <property name="orientation">
+       <enum>Qt::Orientation::Horizontal</enum>
       </property>
-      <property name="maximumSize">
-       <size>
-        <width>70</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LayoutDirection::LeftToRight</enum>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-      </property>
-      <property name="keyboardTracking">
-       <bool>false</bool>
-      </property>
-      <property name="currentSection">
-       <enum>QDateTimeEdit::Section::HourSection</enum>
-      </property>
-      <property name="displayFormat">
-       <string notr="true">HH:mm:ss</string>
-      </property>
+      <widget class="QLabel" name="label_8">
+       <property name="maximumSize">
+        <size>
+         <width>350</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Путь для сохранения промежуточных данных:</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_buff_path">
+       <property name="maximumSize">
+        <size>
+         <width>500</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
      </widget>
-     <widget class="QSpinBox" name="spinBox_add_limit">
-      <property name="maximumSize">
-       <size>
-        <width>70</width>
-        <height>16777215</height>
-       </size>
+     <widget class="QSplitter" name="splitter_9">
+      <property name="orientation">
+       <enum>Qt::Orientation::Horizontal</enum>
       </property>
-     </widget>
-     <widget class="QSpinBox" name="spinBox_check_limit">
-      <property name="maximumSize">
-       <size>
-        <width>70</width>
-        <height>16777215</height>
-       </size>
-      </property>
+      <widget class="QLabel" name="label_9">
+       <property name="maximumSize">
+        <size>
+         <width>350</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Путь для сохранения датасета:</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_save_path">
+       <property name="maximumSize">
+        <size>
+         <width>500</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
      </widget>
     </widget>
-   </widget>
-  </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_general_error">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="button_next">
+     <property name="maximumSize">
+      <size>
+       <width>10000</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">Font-weight: bold;</string>
+     </property>
+     <property name="text">
+      <string>Продолжить</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

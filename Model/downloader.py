@@ -1,164 +1,104 @@
+from statistics import LinearRegression
+import time
+from tqdm import tqdm
 import os
 
 import requests
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.keys     import Keys
+from selenium.webdriver.common.by       import By
+from selenium.webdriver.support.ui      import WebDriverWait
+from selenium.webdriver.support         import expected_conditions      as EC
+from selenium.common.exceptions         import TimeoutException
 
-
-from Model.WebDriverManager import WebDriverManager
+from Model.Sites.TTDownloaders.DownloadPage import DonwloadPage
+from Model.WebDriverManager                 import WebDriverManager
+from Model.Sites.TTDownloaders.SnaptikPage  import SnaptikPage
+from Model.Sites.TTDownloaders.SsstikPage   import SsstikPage
+from Model.Sites.TTDownloaders.FliptokPage  import FliptokPage
+from Controller.LimitsChecker               import LimitsChecker
 
 
 class Downloader:
-    __sites = []
-    __site_id = 0
-    path = ""
+    __pages : list[DonwloadPage]
+    __tab_handlers = []
+    __site_id = 1
     driver : WebDriverManager
 
-    def __init__(self, driver):
-        print("created!")
-        self.driver = driver
-        self.__sites = [
-            self.__snaptik,
-            self.__ssstik,
-            self.__fliptok,
+    def __init__(self,delay : int):
+        
+        self.driver = WebDriverManager(LimitsChecker.PATH_TO_DOWNLOAD,delay,True)
+        
+
+        snaptik_page = SnaptikPage(self.driver)
+        snaptik_handler = self.driver.get_current_tab_handler()
+
+        self.driver.open_new_tab()
+        ssstik_page = SsstikPage(self.driver)
+        ssstik_handler = self.driver.get_current_tab_handler()
+
+        self.driver.open_new_tab()
+        fliptok_page = FliptokPage(self.driver)
+        fliptok_handler = self.driver.get_current_tab_handler()
+
+        self.__tab_handlers = [
+            snaptik_handler,
+            #ssstik_handler,
+            fliptok_handler,
         ]
 
-    def next_site(self):
-        if self.__site_id < len(self.__sites) - 1:
-            self.__site_id += 1
-        else:
-            self.__site_id = 0
+        self.__pages = [
+            snaptik_page,
+            #ssstik_page,
+            fliptok_page,
+        ]
 
+
+    def forward_dwnld(self, src : str, name = "") -> str:
+        return self.__downloading(src, name)
+    
+    def download_image(self,src : str,name : str = "prev.jpeg") -> str:
+        response = requests.get(src, stream=True, allow_redirects=True)
+        full_name = os.path.join(LimitsChecker.PATH_TO_DOWNLOAD,name)
+        with open(full_name, "wb") as handle:
+            for data in tqdm(response.iter_content()):
+                handle.write(data)
+        return full_name
 
     def dwnld(self, src, name):
-        v_url = ""
-        if src.find("www.tiktok.com/") != -1:
-            for num in range(len(self.__sites)):
-                try:
-                    v_url = self.__sites[self.__site_id](src)
-                except Exception as e:
-                    print(str(e))
-                    self.next_site()
-                else:
-                    if v_url != "":
-                        break
-        else:
-            v_url = src
-
+        len_arr_sites = len(self.__pages)
+        for num in range(len_arr_sites):
+            self.__site_id = (self.__site_id + 1) % len_arr_sites
+            v_url = self.__get_url_from_service(src)
+            if v_url != "":
+                break
+        
+        #self.driver.close_tab()
         if v_url == "":
+            print("\tURL не найден")
             return ""
+        print("скачивание...")
         v_path = self.__downloading(v_url, name)
-        return v_path # Есть ли в этом смысл?
+        return v_path 
 
-    def __ssstik(self, src):
-        self.driver.get('https://ssstik.io/en')
-        try:
-            search = WebDriverWait(self.driver, self.delay).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "input-lg"))
-            )
-        except TimeoutException:
-            raise Exception("SSSTIK cannot be loaded!")
-        search.send_keys(src)
-        search.send_keys(Keys.RETURN)
-
-        try:
-            search = WebDriverWait(self.driver, self.delay).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "pure-button"))
-            )
-        except TimeoutException:
-            raise Exception("SSSTIK cannot process URL")
-        url = search.get_attribute('href')
+    def __get_url_from_service(self,src : str) -> str:
+        self.driver.open_exitsting_tab(self.__tab_handlers[self.__site_id])
+        url = self.__pages[self.__site_id].get_dwnld_url(src)
+        self.__pages[self.__site_id].get_home_page()
         return url
 
-    def __snaptik(self, src):
-        url = ""
-        self.driver.get("https://snaptik.app/en")
-        try:
-            elem = WebDriverWait(self.driver, self.delay).until(
-                EC.presence_of_element_located((By.ID, "url"))
-            )
-        except TimeoutException:
-            raise Exception("SNAPTIK cannot be loaded!")
-        elem.send_keys(src)
-        elem.send_keys(Keys.RETURN)
-        try:
-            elem = WebDriverWait(self.driver, self.delay).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "download-block")))
-        except TimeoutException:
-            raise Exception("SNAPTIK cannot process URL")
-        elems = elem.find_elements(By.CLASS_NAME, "abutton")
-        error = True
-
-        for elem in elems:
-            url = elem.get_attribute("href")
-            r = requests.get(url, allow_redirects=True)
-            if r.text.find("Please complete the security check to access") != -1:
-                continue
-            if r.text.find("Error get link") == -1:
-                error = False
-                break
-        if error:
-            return ""
-        else:
-            return url
-
-    def __fliptok(self, url):
-        self.driver.get("https://fliptok.app/ru")
-        try:
-            WebDriverWait(self.driver, self.delay).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "link-input")))
-        except TimeoutException:
-            raise Exception("FLIPTOK cannot be loaded")
-        inp = self.driver.find_element(By.CLASS_NAME, "link-input")
-        inp.send_keys(url)
-        self.driver.find_element(By.ID, "download-btn").click()
-        try:
-            WebDriverWait(self.driver, self.delay).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "btn-primary")))
-        except TimeoutException:
-            raise Exception("FLIPTOK cannot process URL")
-
-        elem = self.driver.find_element(By.CLASS_NAME, "btn-primary")
-        url = elem.get_attribute("href")
-        return url
-
-    def __tikmate(self, src): #Шото с ним не так
-        url = ""
-        self.driver.get("https://tikmate.online/?lang=ru")
-        try:
-            elem = WebDriverWait(self.driver, self.delay).until(
-                EC.presence_of_element_located((By.ID, "url"))
-            )
-        except TimeoutException:
-            raise Exception("TIKMATE cannot be loaded!")
-        elem.send_keys(src)
-        elem.send_keys(Keys.RETURN)
-        try:
-            elem = WebDriverWait(self.driver, self.delay).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "abuttons")))
-        except TimeoutException:
-            raise Exception("TIKMATE cannot process URL")
-        elems = elem.find_elements(By.CLASS_NAME, "abutton")
-        error = True
-        for elem in elems:
-            url = elem.get_attribute("href")
-            r = requests.get(url, allow_redirects=True)
-            if r.text.find("Please complete the security check to access") != -1:
-                continue
-            if r.text.find("Error get link") == -1:
-                error = False
-                break
-        if error:
-            return ""
-        else:
-            return url
 
     def __downloading(self, src, name):
-
-        r = requests.get(src)
-        with open(self.path + name, "wb") as f:
-            f.write(r.content)
-        return self.path + name
+        self.driver.get(src)
+        true_name = self.driver.getDownLoadedFileName()
+        if (true_name == ""):
+            return ""
+        true_full_name = os.path.join(LimitsChecker.PATH_TO_DOWNLOAD,true_name)
+        if (name == ""):
+            return true_full_name
+        full_dst_name = os.path.join(LimitsChecker.PATH_TO_DOWNLOAD,name)
+        time.sleep(1)
+        os.rename(
+            true_full_name,
+            full_dst_name )
+        return full_dst_name
+            

@@ -1,7 +1,7 @@
 from enum import IntEnum
 
-from SiteManagers.TikTokManager import TikTokManager
-import WebDriverManager
+from Model.SiteManagers.TikTokManager import TikTokManager
+from Model.WebDriverManager import WebDriverManager
 
 
 class ManagerType(IntEnum):

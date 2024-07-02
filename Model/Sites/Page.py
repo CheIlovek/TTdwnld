@@ -1,4 +1,4 @@
-import WebDriverManager
+from Model.WebDriverManager import WebDriverManager
 
 class Page:
     

@@ -1,5 +1,6 @@
 import face_recognition as fc
 from PIL import Image
+from Controller.LimitsChecker import LimitsChecker
 
 class FaceAnalyzer:
 
@@ -11,14 +12,14 @@ class FaceAnalyzer:
             image = fc.load_image_file(path)
             face_per = self.calc_percent(image)
             percents.append(face_per)
-            if face_per < self.FACE_PERCENT:
+            if face_per < LimitsChecker.FACE_PERCENT_REQ:
                 passed = False
                 break
     
         return passed
 
 
-    def calc_percent(fc_img):
+    def calc_percent(self,fc_img):
         # возвращает процент площади, которую занимает лицо на заданном изображении
         fc_loc = fc.face_locations(fc_img)
         pil_img = Image.fromarray(fc_img)

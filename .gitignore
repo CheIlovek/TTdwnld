@@ -2,5 +2,8 @@ data
 done*
 test*.py
 *.txt
+*.log
 images
 venv
+__pycache__/
+User_Data*

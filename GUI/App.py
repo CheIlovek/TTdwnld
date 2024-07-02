@@ -18,7 +18,11 @@ class WindowsEnum(IntEnum):
 class App(QMainWindow):
     def __init__(self):
         super(App,self).__init__()
-        self.switch_windows(WindowsEnum.SERVICE_CHOOSE)
+        self.ui = UIFeedSettings()
+        self.ui.setupUi(self)
+        self.centralWidget = None
+        #self.switch_windows(WindowsEnum.SERVICE_CHOOSE)
+        
 
 
     def switch_windows(self,window : WindowsEnum):

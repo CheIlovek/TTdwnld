@@ -3,6 +3,7 @@ from datetime import timedelta
 import os
 #import numpy as np
 from Controller.LimitsChecker import LimitsChecker
+from numpy import arange
 
 
 class VidToFrames:
@@ -23,13 +24,14 @@ class VidToFrames:
         result_paths = []
         try:
             video_clip = VideoFileClip(video_file)
-        except OSError:
+        except:
+            print("ERROR - FILE IS DAMAGED?")
             return ""
 
         saving_frames_per_second = min(video_clip.fps, LimitsChecker.FRAMES_PER_SECOND)
         step = 1 / saving_frames_per_second
 
-        for current_duration in range(0,video_clip.duration,step):
+        for current_duration in arange(0,video_clip.duration,step):
             frame_duration_formatted = self.format_timedelta(timedelta(seconds=current_duration)).replace(":", "-")
             frame_filename = os.path.join(LimitsChecker.PATH_TO_SAVE_IMAGES, f"frame{frame_duration_formatted}.jpg")
             result_paths.append(frame_filename)

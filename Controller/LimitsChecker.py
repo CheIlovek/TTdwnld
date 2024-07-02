@@ -6,7 +6,7 @@ class LimitsChecker:
     database               : dict           = {}
     CURRENT_SITE_TYPE      : ManagerType    = ManagerType.TIKTOK
     VIDEO_PER_CHANNEL      : int            = 10
-    FACE_PERCENT_REQ       : int            = 15
+    FACE_PERCENT_REQ       : int            = 10
     FRAMES_PER_SECOND      : int            = 1
     
     PATH_TO_DOWNLOAD       : str            = R"D:\Projects\TTdwnld\buff"
@@ -28,7 +28,7 @@ class LimitsChecker:
             channel_id  = cls.__get_next_param(filename)
             video_id    = cls.__get_next_param(filename)
  
-            if channel_id in cls.database[site_type]:
+            if channel_id in cls.database[ManagerType(int(site_type))]:
                 cls.database[channel_id].append(video_id)
             else:
                 cls.database[channel_id] = [video_id]
@@ -42,7 +42,7 @@ class LimitsChecker:
                    or video_id in cls.database[cls.CURRENT_SITE_TYPE][channel_id])
     @classmethod
     def __get_next_param(cls,filename):
-        separator = filename.rfind("_")
+        separator = filename.find("_")
         if separator != -1:
             return filename[:separator]
         return filename
